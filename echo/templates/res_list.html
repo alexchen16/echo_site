@@ -1,0 +1,158 @@
+<!--继承index.html-->
+{% extends "index.html" %}
+{% block page_css %}
+{% endblock %}
+<!--填充导航栏的页面名称-->
+{% block page_title %}
+    基础资料
+{% endblock %}
+<!--放置主页面内容-->
+{% block container %}
+    {% load staticfiles %}
+
+
+    <div class="row">
+        <!-- Search Page BEGINS-->
+        <div class="col-xs-12">
+            <form class="navbar-for navbar-container" role="search" method="get" action="">{% csrf_token %}
+                <!--放置搜索栏内容-->
+                {% block search %}
+                {% endblock %}
+                <div class="col-sm-3">
+								<span class="input-group-btn">
+									<button type="submit" class="btn btn-purple btn-sm">
+                                        查询
+                                        <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                    </button>
+								</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Search Page END -->
+
+
+        <!-- PAGE TABLES BEGINS -->
+
+
+        <div class="col-xs-12">
+            <div>
+                <table id="table_id" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <!--表格头部-->
+                    {% block table_tr %}
+                    {% endblock %}
+                    <th>
+                        <!--最后一列作为添加数据按钮-->
+                        <a class="blue" href="{% url 'add' table=table %}">
+                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                            添加数据
+                        </a>
+                    </th>
+                    </thead>
+                   <!--表格内容-->
+                    <tbody>
+                    {% for item in data %}
+                        <tr>
+                            <!--通过for循环从data取出的具体表格内容-->
+                            {% block table_td %}
+                            {% endblock %}
+                            <td>
+                                <!--页面扩展时的按钮布局-->
+                                <div class="hidden-sm hidden-xs action-buttons">
+                                    <!--编辑信息按钮,同时获取item.id，传递给url-->
+                                     <a class="green" href="{% url 'edit' table item.id %}" title="编辑信息">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
+                                    <!--删除信息按钮，为每个删除按钮设置一个id，并将content和title传递给modal-->
+                                     <a id="modal_button_{{ item.id }}" class="red" href="#modal_form"
+                                       data-toggle="modal" rel="{% url 'delete' table item.id %}" content="确认删除该条目么？" title="删除信息">
+                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                    </a>
+                                </div>
+                                <!--页面收缩时的按钮布局-->
+                                <div class="hidden-md hidden-lg">
+                                    <div class="inline position-relative">
+                                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown"
+                                                data-position="auto">
+                                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+
+                                        </button>
+
+
+                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                            <li>
+                                                <a href="{% url 'add' table=table %}" class="tooltip-info" data-rel="tooltip" title="添加数据">
+																				<span class="blue">
+																					<i class="ace-icon fa fa-search-plus bigger-120"></i>
+																				</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <!--编辑信息按钮，同时获取item.id，传递给url-->
+                                                <a class="green" href="{% url 'edit' table item.id %}" title="编辑信息">
+
+																				<span class="green">
+																					<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																				</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a id="modal_button_{{ item.id }}" class="red" href="#modal_form"
+                                       data-toggle="modal" rel="{% url 'delete' table item.id %}" content="确认删除该条目么？"
+                                       title="删除信息">
+																				<span class="red">
+																					<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																				</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+          <!--引入modal.html-->
+         {% include 'modal.html' %}
+          <!--引入pagination.html-->
+         {% include 'pagination.html' %}
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block page_javascript %}
+
+   {% include 'modal_js.html' %}
+    <!--datatable的专用js-->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#table_id').DataTable({
+                //分页配置
+                "paging": false,
+                //搜索配置
+                "searching": false,
+                "bInfo": false,
+                //列配置
+                "columnDefs": [{
+                    //只有最后一行不需要排序
+                    "orderable": false, "targets": -1
+                }]
+            });
+        });
+    </script>
+
+
+{% endblock %}
+

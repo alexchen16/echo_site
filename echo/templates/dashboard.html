@@ -1,0 +1,122 @@
+<!--继承index.html-->
+{% extends "index.html" %}
+{% block page_css %}
+
+{% endblock %}
+<!--填充导航栏的页面名称-->
+{% block page_title %}
+    信息汇总
+{% endblock %}
+<!--放置主页面内容-->
+{% block container %}
+<div class="col-sm-7 infobox-container">
+				<!-- #section:pages/dashboard.infobox -->
+				<div class="infobox infobox-green">
+					<div class="infobox-icon">
+                      <!--将节点图表更改成 home，之后的雷同-->
+						<i class="ace-icon fa fa-home"></i>
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ node_number }}</span>
+						<div class="infobox-content">节点数量</div>
+					</div>
+
+				</div>
+
+				<div class="infobox infobox-blue">
+					<div class="infobox-icon">
+						<i class="ace-icon fa fa-book"></i>
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ line_number }}</span>
+						<div class="infobox-content">线路数量</div>
+					</div>
+
+				</div>
+
+				<div class="infobox infobox-pink">
+					<div class="infobox-icon">
+						<i class="ace-icon fa fa-desktop"></i>
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ device_number }}</span>
+						<div class="infobox-content">设备数量</div>
+					</div>
+				</div>
+
+				<div class="infobox infobox-red">
+					<div class="infobox-icon">
+						<i class="ace-icon fa fa-edit"></i>
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ task_number }}</span>
+						<div class="infobox-content">任务总数</div>
+					</div>
+				</div>
+
+				<div class="infobox infobox-orange2">
+                    <div class="infobox-icon">
+						<i class="ace-icon fa fa-check"></i>
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ task_complete }}</span>
+						<div class="infobox-content">任务完成数</div>
+					</div>
+
+				</div>
+
+				<div class="infobox infobox-blue2">
+					<div class="infobox-progress">
+						<!-- #section:pages/dashboard.infobox.easypiechart -->
+                        <!--以下是easy-pie-chart的显示部分-->
+						<div style="height: 45px; width: 45px; line-height: 45px;" class="easy-pie-chart percentage" data-percent={{ task_complete_percent }} data-size="46">
+
+						<canvas width="46" height="46"></canvas></div>
+
+						<!-- /section:pages/dashboard.infobox.easypiechart -->
+					</div>
+
+					<div class="infobox-data">
+						<span class="infobox-data-number">{{ task_complete_percent }}%</span>
+						<div class="infobox-content">任务完成率</div>
+					</div>
+				</div>
+
+				<!-- /section:pages/dashboard.infobox -->
+				<div class="space-6"></div>
+
+
+			</div>
+{% endblock %}
+
+{% block page_javascript %}
+    		<script type="text/javascript">
+            //以下是easy-pie-chart的显示用的js
+
+			jQuery(function($) {
+                $('.easy-pie-chart.percentage').each(function () {
+                    var $box = $(this).closest('.infobox');
+                    var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+                    var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+                    var size = parseInt($(this).data('size')) || 50;
+                    $(this).easyPieChart({
+                        barColor: barColor,
+                        trackColor: trackColor,
+                        scaleColor: false,
+                        lineCap: 'butt',
+                        lineWidth: parseInt(size / 10),
+                        animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+                        size: size
+                    });
+                })
+
+            })
+                </script>
+
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{%  extends "index.html" %}
+{% block page_title %}
+    上传文件
+{% endblock %}
+{% block container %}
+{% load staticfiles %}
+
+
+<form enctype="multipart/form-data" method="POST" action="">{% csrf_token %}
+
+    {{ form }}
+   <input type="submit" value="上传文件" />
+</form>
+
+{% endblock %}

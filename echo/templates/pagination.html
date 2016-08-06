@@ -1,0 +1,36 @@
+<div class="col-xs-12">
+                                <div class="col-xs-6">
+
+                                <ul class="pagination">共{{ page_nums }}页 {{ count }}条记录</ul>
+                                </div>
+                                        <div class="col-xs-6 align-right ">
+                                    <ul class="pagination ">
+
+                                    <!--如果数据还有前页,则上一页按钮有效-->
+                                    {% if data.has_previous %}
+                                    <li><a href="?page={{ data.previous_page_number }}{{ query }}">上一页</a></li>
+                                    {% else %}
+                                    <li class="active"><a>上一页</a></li>
+                                    {% endif %}
+                                    <!--分页展示，当前在哪页，当前页的按钮无法使用-->
+                                    {% for p in page_range %}
+
+                                      {% ifequal p data.number %}
+                                      <li class="active"><a>{{p}}</a></li>
+                                      {% else %}
+                                      <li><a href="?page={{p}}{{ query }}" title="第{{p}}页">{{p}}</a><li>
+                                      {% endifequal %}
+                                    {% endfor %}
+                                       <!--如果数据还有后页,则下一页按钮有效-->
+                                    {% if data.has_next %}
+                                    <li><a href="?page={{ data.next_page_number }}{{ query }}">下一页</a></li>
+                                    {% else %}
+                                    <li class="active"> <a>下一页</a></li>
+                                    {% endif %}
+
+                                    </ul>
+
+                                       </div>
+
+
+</div>

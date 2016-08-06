@@ -1,0 +1,49 @@
+{% extends "res_list.html" %}
+{% block search %}
+
+                     <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="device_caption" >设备名称</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="node_name" name="device_caption">
+                        </div>
+                     </div>
+
+
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="device_ip">管理地址</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="node_address" name = "device_ip">
+                        </div>
+                     </div>
+
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="node">使用部门</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="node_address" name = "node">
+                        </div>
+                     </div>
+
+{% endblock %}
+
+{% block table_tr %}
+
+<th>设备名称</th>
+<th>主机名称</th>
+<th>管理地址</th>
+<th>使用部门</th>
+<th>设备型号</th>
+<th>设备序列号</th>
+<th>登记人</th>
+
+
+{% endblock %}
+{% block table_td %}
+<td>{{item.device_caption}}</td>
+<td>{{item.device_sysname}}</td>
+<td>{{item.device_ip}}</td>
+<td>{{item.node}}</td>
+<td>{{item.device_type}}</td>
+<td>{{item.device_serial}}</td>
+<td>{{item.signer}}</td>
+
+{% endblock %}

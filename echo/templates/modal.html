@@ -1,0 +1,24 @@
+<!-- Modal -->
+<!-- Modal的id为modal_form-->
+ <div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h4 class="modal-title" id="myModalLabel">删除任务</h4>
+       </div>
+         <!--Form的id为myForm-->
+         <form id="myForm" method="POST" >{% csrf_token %}
+       <div class="modal-body">
+        <!--存放content内容-->
+       </div>
+
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+         <button type="submit" class="btn btn-primary" >确认</button>
+       </div>
+        </form>
+
+     </div>
+   </div>
+ </div>

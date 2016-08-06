@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% block active_task %}
+    active open
+{% endblock %}
+{% block page_title %}
+    任务处理
+{% endblock %}
+{% block container %}
+    <div class="row">
+    <div class="col-sm-6 pull-left">
+
+    <form method='POST' action=''>{% csrf_token %}
+        {{ form | crispy }}
+        <br>
+        <input class='btn btn-primary' type='submit' value='提交' />
+        <a href="{% url 'task_edit' id %}  "><input class='btn btn-default' type='button' value='取消' /></a>
+    </form>
+    </div>
+    </div>
+
+{% endblock %}
+
+
+
+

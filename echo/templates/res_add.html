@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+<!--引用crispy-forms标签-->
+{% load crispy_forms_tags %}
+{% block page_title %}
+    基础资料
+{% endblock %}
+{% block container %}
+    <div class="row">
+    <div class="col-sm-3 pull-left">
+
+    <form method='POST' action=''>{% csrf_token %}
+        <!--将crispy-forms应用到form中-->
+        {{ form | crispy}}
+
+        <input class='btn btn-primary' type='submit' value='提交' />
+        <a href="{% url 'lists' table=table %}  "><input class='btn btn-default' type='button' value='取消' /></a>
+    </form>
+    </div>
+    </div>
+
+{% endblock %}

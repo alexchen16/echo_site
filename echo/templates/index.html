@@ -1,0 +1,427 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>Echo project</title>
+
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <!-- 调用相应的CSS元素-->
+        {%  include 'head_css.html' %}
+        <!--存放网页特需的CSS元素-->
+        {% block page_css %}
+        {% endblock %}
+
+	</head>
+
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<!-- #section:basics/sidebar.mobile.toggle -->
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="fa fa-leaf"></i>
+							Echo Project
+						</small>
+					</a>
+
+					<!-- /section:basics/navbar.layout.brand -->
+
+					<!-- #section:basics/navbar.toggle -->
+
+					<!-- /section:basics/navbar.toggle -->
+
+                </div>
+
+				<!-- #section:basics/navbar.dropdown -->
+				<div class="navbar-buttons navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+
+	<!-- #section:basics/navbar.user_menu -->
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+
+								<span class="user-info">
+                                <!--判断用户是否已经通过认证，如果通过则显示用户已登陆-->
+                                    {% if user.is_authenticated %}
+                                        用户选项
+                                        <small>{{user.username}}已登录</small>
+                                    {% else %}
+                                        用户选项
+                                    {% endif %}
+
+								</span>
+
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+                                <!--如果用户已经登陆则显示注销选项，否则显示登录选项-->
+                                {% if user.is_authenticated %}
+                                    <li>
+									<a href="{% url 'logout' %}">
+										<i class="ace-icon fa fa-power-off"></i>
+										注销
+									</a>
+								</li>
+                                    {% else %}
+								<li>
+									<a href="{% url 'login'%}">
+										<i class="ace-icon fa fa-user"></i>
+										登录
+									</a>
+								</li>
+                                {% endif %}
+
+                                <li class="divider"></li>
+                                <li>
+									<a href="{% url 'password_change' %}">
+										<i class="ace-icon fa fa-cog"></i>
+										更改密码
+									</a>
+								</li>
+
+
+
+
+							</ul>
+						</li>
+
+						<!-- /section:basics/navbar.user_menu -->
+					</ul>
+				</div>
+
+				<!-- /section:basics/navbar.dropdown -->
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<!-- #section:basics/sidebar -->
+			<div id="sidebar" class="sidebar responsive">
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+				</script>
+
+				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+						<button class="btn btn-success">
+							<i class="ace-icon fa fa-signal"></i>
+						</button>
+
+						<button class="btn btn-info">
+							<i class="ace-icon fa fa-pencil"></i>
+						</button>
+
+						<!-- #section:basics/sidebar.layout.shortcuts -->
+						<button class="btn btn-warning">
+							<i class="ace-icon fa fa-users"></i>
+						</button>
+
+						<button class="btn btn-danger">
+							<i class="ace-icon fa fa-cogs"></i>
+						</button>
+
+						<!-- /section:basics/sidebar.layout.shortcuts -->
+					</div>
+
+					<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+						<span class="btn btn-success"></span>
+
+						<span class="btn btn-info"></span>
+
+						<span class="btn btn-warning"></span>
+
+						<span class="btn btn-danger"></span>
+					</div>
+				</div><!-- /.sidebar-shortcuts -->
+
+				<ul class="nav nav-list">
+					<li class="">
+						<a href="{% url 'index'%}">
+							<i class="menu-icon fa fa-tachometer"></i>
+							<span class="menu-text"> 信息汇总 </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+
+					{% if 'task' in request.path or 'tools' in request.path %}
+                            <li class="active open" >
+                                {% else %}
+                            <li class="">
+                        {% endif %}
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-desktop"></i>
+							<span class="menu-text"> 任务工具 </span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+                              {% if  'task' in request.path %}
+                            <li class="active" >
+                                {% else %}
+                                <li class="">
+                            {% endif %}
+								<a href="{% url 'task_list'%}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									任务列表
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li class="">
+								<a href="#" class="dropdown-toggle">
+									<i class="menu-icon fa fa-caret-right"></i>
+
+									网络工具
+									<b class="arrow fa fa-angle-down"></b>
+								</a>
+
+								<b class="arrow"></b>
+
+								<ul class="submenu">
+									<li class="">
+										<a href="top-menu.html">
+											<i class="menu-icon fa fa-caret-right"></i>
+											Top Menu
+										</a>
+
+										<b class="arrow"></b>
+									</li>
+
+									<li class="">
+										<a href="mobile-menu-1.html">
+											<i class="menu-icon fa fa-caret-right"></i>
+											Default Mobile Menu
+										</a>
+
+										<b class="arrow"></b>
+									</li>
+
+									<li class="">
+										<a href="mobile-menu-2.html">
+											<i class="menu-icon fa fa-caret-right"></i>
+											Mobile Menu 2
+										</a>
+
+										<b class="arrow"></b>
+									</li>
+
+									<li class="">
+										<a href="mobile-menu-3.html">
+											<i class="menu-icon fa fa-caret-right"></i>
+											Mobile Menu 3
+										</a>
+
+										<b class="arrow"></b>
+									</li>
+								</ul>
+							</li>
+
+
+
+
+						</ul>
+					</li>
+                    <!--如果相关路径在请求路径中，那么一下li class为active open -->
+						{% if '/lists/' in request.path or '/add/' in request.path or '/edit/' in request.path %}
+                            <li class="active open" >
+
+                                {% else %}
+                            <li class="">
+                        {% endif %}
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> 基础信息 </span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+                        <!--如果以下路径有node在请求路径中，那么节点信息的class li="active"-->
+							{% if '/node/' in request.path %}
+                            <li class="active" >
+                                {% else %}
+                                <li class="">
+                            {% endif %}
+								<a href="{% url 'lists' table='node' %}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									节点信息
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+                            {% if '/line/' in request.path %}
+                            <li class="active" >
+                                {% else %}
+                                <li class="">
+                            {% endif %}
+								<a href="{% url 'lists' table='line' %}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									线路信息
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+                             {% if  '/device/' in request.path %}
+                            <li class="active" >
+                                {% else %}
+                                <li class="">
+                            {% endif %}
+								<a href="{% url 'lists' table='device' %}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									设备信息
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					</li>
+
+
+
+
+				</ul><!-- /.nav-list -->
+
+				<!-- #section:basics/sidebar.layout.minimize -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+				</script>
+			</div>
+
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<!-- #section:basics/content.breadcrumbs -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+
+					<ul class="breadcrumb">
+						<li>
+							<i class="ace-icon fa fa-home home-icon"></i>
+							<a href="#">Home</a>
+						</li>
+
+						<li>
+							<a href="#">{{ page_title }}</a>
+						</li>
+						<li class="active">{{ sub_title }}</li>
+					</ul><!-- /.breadcrumb -->
+
+
+				</div>
+
+				<!-- /section:basics/content.breadcrumbs -->
+				<div class="page-content">
+					<div class="page-content-area">
+                        <div class="page-header">
+                                <h1>
+                                    <!--设置导航栏的页面标题-->
+                                    {{ page_title }}
+                                    <small>
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                         <!--设置导航栏的页面子标题-->
+                                        {{ sub_title }}
+                                    </small>
+                                </h1>
+                            </div><!-- /.page-header -->
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+                                <!--设置页面内容-->
+                                {% block container %}
+
+                                {% endblock %}
+
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content-area -->
+				</div><!-- /.page-content -->
+			</div><!-- /.main-content -->
+
+			<div class="footer">
+				<div class="footer-inner">
+					<!-- #section:basics/footer -->
+					<div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Echo</span>
+							Application &copy; 2016
+						</span>
+
+						&nbsp; &nbsp;
+						<span class="action-buttons">
+							<a href="#">
+								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+							</a>
+
+							<a href="#">
+								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+							</a>
+
+							<a href="#">
+								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+							</a>
+						</span>
+					</div>
+
+					<!-- /section:basics/footer -->
+				</div>
+			</div>
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+        <!--引用基础的javascript元素-->
+        {%  include 'javascript.html' %}
+        <!--存放网页特定的javascript-->
+        {% block page_javascript %}
+        {% endblock %}
+
+	</body>
+</html>

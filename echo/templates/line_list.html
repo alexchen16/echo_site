@@ -1,0 +1,57 @@
+{% extends "res_list.html" %}
+{% block search %}
+
+                     <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="line_code" >线路编号</span>
+                            <input type="text" class="form-control"  aria-describedby="line_code" name="line_code"
+                             {% if request.GET.line_code %}value = {{ request.GET.line_code }}{% endif %}      >
+                        </div>
+                     </div>
+
+                     <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="node">用户名称</span>
+                            <input type="text" class="form-control"  aria-describedby="node_name" name="node"
+                                     {% if request.GET.node %}value = {{ request.GET.node }}{% endif %}  >
+                        </div>
+                     </div>
+
+                     <div class="col-sm-3">
+                         <div class="input-group">
+                             <span class="input-group-addon" id="sp_name">运营商</span>
+                             <select class="form-control" name="line_spname">
+                                 <option value="">所有运营商</option>
+                                 <option value="中国电信" {% if request.GET.line_spname and request.GET.line_spname == '中国电信'%} selected{% endif %}>中国电信</option>
+                                 <option value="电信信网" {% if request.GET.line_spname and request.GET.line_spname == '电信信网'%} selected{% endif %}>电信信网</option>
+                                 <option value="中国移动" {% if request.GET.line_spname and request.GET.line_spname == '中国移动'%} selected{% endif %}>中国移动</option>
+                                <option value="中国联通"  {% if request.GET.line_spname and request.GET.line_spname == '中国联通'%} selected{% endif %}>中国联通</option>
+                                <option value="其他"  {% if request.GET.line_spname and request.GET.line_spname == '其他'%} selected{% endif %}>其他</option>
+
+                            </select>
+                             </div>
+                    </div>
+
+
+
+{% endblock %}
+
+{% block table_tr %}
+    <th>线路编号</th>
+	<th>用户名称</th>
+	<th>本端地址</th>
+	<th>对端地址</th>
+	<th>运营商</th>
+	<th>线路类型</th>
+	<th>线路速率</th>
+
+{% endblock %}
+{% block table_td %}
+    <td>{{item.line_code}}</td>
+	<td>{{item.node}}</td>
+	<td>{{item.line_local}}</td>
+	<td>{{item.node.node_address}}</td>
+	<td>{{item.line_spname}}</td>
+	<td>{{item.line_type}}</td>
+	<td>{{item.line_speed}}</td>
+{% endblock %}

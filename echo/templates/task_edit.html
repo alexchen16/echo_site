@@ -1,0 +1,155 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block page_title %}
+    任务处理
+{% endblock %}
+{% block container %}
+    <div class="row">
+    <div class="col-sm-12 pull-left">
+
+
+
+        <!---任务基础信息 BEGIN--->
+
+    <!----需要提交的内容，放于form中---->
+    <div class="col-sm-4 pull-left">
+
+      <div id="div_id_task_title" class="form-group">
+           <label for="id_task_title" class="control-label"><strong>任务名称</strong></label>
+           <div class="controls">
+            <label for="id_task_title" class="control-label">{{ task.task_title }}</label>
+               <label for="id_task_category" class="control-label">[</label>
+               {{ task.task_category }}<label>]</label>
+            </div>
+        </div>
+    <form method='POST' action='{% url 'task_edit' pk=task.id %}'>{% csrf_token %}
+
+        <div id="div_id_task_contacts" class="form-group">
+            <label for="id_task_contacts" class="control-label"><strong>联系人员</strong></label>
+            <div class="controls ">
+             <textarea class="textarea form-control"  id="id_task_contacts" name="task_contacts" rows="2" {% if task.task_status == '已结单' %}readonly="readonly"{% endif %}/>{{ task.task_contacts }}</textarea>
+             </div> </div>
+
+        <div id="div_id_task_member" class="form-group">
+            <label for="id_task_member" class="control-label  requiredField"><strong>实施人员</strong></label>
+            <div class="controls "> <input class="textinput textInput form-control" id="id_task_member" maxlength="255" name="task_member" type="text" value="{% for member in task.task_member.all %}{{ member }}  {% endfor %} " readonly/> </div> </div>
+
+
+        <!---任务基础信息 END--->
+  <!-----附件上传页面 BEGIN----->
+        <div id="div_id_task_attachment" class="form-group">
+            <label for="div_id_task_attachment" class="control-label"><strong>附件</strong></label>
+        </div>
+        <div>
+        <!--通过数据库，将upload中附件的数据取出，并展示-->
+                {% for data in task.upload_set.all %}
+                    <!--get_media_prefix 在settings.py中定义,获取相关路径，并显示相应文件名-->
+                    <a href="{% get_media_prefix %}{{ data.upload_title }}">{{ data.upload_title }}</a><br/>
+                {% endfor %}
+        <br/><br/>
+        </div>
+        <!---附件上传页面 end---->
+    <!--如果任务的状态是处理中，那么以下按钮正常出现，如果是其他状态，那么这些按钮不出现-->
+        {% if task.task_status == '处理中' %}
+
+    <div>
+        <a href="{% url 'upload_file' task.id %}  "><input class='btn btn-purple' type='button' value='添加附件' /></a>
+     <a id="modal_button_1" class="blue" data-toggle="modal" href="#modal_form" rel="{% url 'task_finish' task.id %}" content="确认结束标题为{{ task.task_title }}的任务么？" title="结束任务" ><input class='btn btn-primary' type='button' value='结束任务' /></a>
+
+
+    </div>
+    {% endif %}
+        <br/><br/>
+
+
+     {% if task.task_status == '处理中' %}
+
+
+         <!-- 新增处理过程 BEGINS -->
+            <label for="id_process_content" class="control-label">
+                新增处理过程 </label>
+
+            <div class="controls ">
+                <textarea class="textarea form-control"  id="id_process_content" name="process_content" rows="10">
+            </textarea>
+            </div>
+     <!--如果在处理中，那么显示'提交'及'取消'按钮--->
+        <input class='btn btn-primary' type='submit' value='提交' />
+        <a href="{% url 'task_list' %}">
+     <input class='btn btn-default' type='button' value='取消' /></a>
+
+    {% else %}
+    <!--如果任务已经结束，那么仅显示'返回'按钮--->
+
+        <a href="{% url 'task_list' %}">
+     <input class='btn btn-default' type='button' value='返回' /></a>
+
+    {% endif %}
+
+    </form></div>
+
+
+
+       <!-----显示处理过程 BEGIN---->
+
+    <div class="col-sm-8 pull-right">
+        <div id="div_id_process_content" class="form-group">
+
+            <div class="controls ">
+            <!--从process中获取所有的item并显示--->
+                {% for item in task.process_set.all %}
+
+                    <dl>
+                    <dt>处理时间</dt>
+                        <dd>{{ item.process_signtime }}</dd>
+                    <dt>处理人</dt>
+                        <dd>{{ item.process_signer }}</dd>
+                    </dl>
+
+                     <dl>
+                    <dt>处理过程</dt>
+                        <dd>{{item.process_content}}</dd>
+                    </dl>
+                    <!--如果用户是该实施步骤的登记人且任务的状态为处理中，那么可以对实施步骤进行更改或删除--->
+                    {% if user == item.process_signer and task.task_status == '处理中' %}
+                    <span>
+                        <a href="{% url 'process_edit' item.id %}" style="color:grey">编辑</a>|
+                        <a id="modal_button_2" class="grey" data-toggle="modal" href="#modal_form" rel="{% url 'process_delete' item.id %}" content="确认删除内容为{{ item.process_content }}的记录么？" title="删除记录">删除</a>
+
+                    </span>
+
+                    {% endif %}
+
+
+                    <hr/>
+                {% endfor %}
+            </div>
+         </div>
+        </div>
+        <!-----处理过程 END---->
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    </div>
+    {% include 'modal.html' %}
+
+{% endblock %}
+
+{% block page_javascript %}
+    {% include 'modal_js.html' %}
+
+{% endblock %}
+
+
+

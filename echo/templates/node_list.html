@@ -1,0 +1,49 @@
+{% extends "res_list.html" %}
+{% block search %}
+    <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="node_name" >节点名称</span>
+                         <!-- 如果之前已经写入了node_name的信息，那么页面重新加载后保留-->
+                            <input type="text" class="form-control" placeholder="" aria-describedby="node_name" name="node_name"
+                                    {% if request.GET.node_name %}value = {{ request.GET.node_name }}{% endif %}>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="node_address">节点地址</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="node_address" name = "node_address"
+                                    {% if request.GET.node_address %}value = {{ request.GET.node_address }}{% endif %}>
+                        </div>
+                     </div>
+
+                     <div class="col-sm-3">
+                         <div class="input-group">
+                             <span class="input-group-addon" id="node_type">节点类型</span>
+                             <select class="form-control" name="node_type">
+                                 <option value="">所有类型</option>
+                                 <option value="总部" {% if request.GET.node_type and request.GET.node_type == '总部'%} selected{% endif %}>总部</option>
+                                 <option value="分部" {% if request.GET.node_type and request.GET.node_type == '分部'%} selected{% endif %}>分部</option>
+                            </select>
+                             </div>
+                    </div>
+{% endblock %}
+
+{% block table_tr %}
+
+<th>机构名称</th>
+<th>机构分类</th>
+<th>成本中心</th>
+<th>机构地址</th>
+<th>联系人</th>
+
+
+{% endblock %}
+{% block table_td %}
+<td>{{item.node_name}}</td>
+<td>{{item.node_type}}</td>
+<td>{{item.node_cost}}</td>
+<td>{{item.node_address}}</td>
+<td>{{item.node_contact}}</td>
+
+{% endblock %}
