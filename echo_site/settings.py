@@ -140,3 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #App settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+#login_required URL
+LOGIN_URL = '/login/'

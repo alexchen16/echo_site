@@ -9,13 +9,14 @@ from upload import handle_uploaded_file
 import json
 
 from django.contrib.auth import views
-
+from django.contrib.auth.decorators import login_required
 
 
 import time
 # Create your views here.
 
 #显示首页
+@login_required
 def index(request):
     #获取相应信息
     node_number = Node.objects.count()
@@ -43,6 +44,7 @@ def index(request):
 
 
 #显示各列表信息
+@login_required
 def lists(request, table):
     #从根据不同的请求，来获取相应的数据,并跳转至相应页面
     if table == 'node':
@@ -213,6 +215,7 @@ def delete(request, table ,pk):
 
 
 #任务的列表显示
+@login_required
 def task_list(request):
     #如果通过GET来获取了相应参数，那么进行查询
     if request.method == 'GET':
@@ -547,6 +550,7 @@ def logout(request):
     return template_response
 
 #密码更改
+@login_required
 def password_change(request):
     #post_change_redirect表示密码成功修改后将跳转的页面.
     template_response = views.password_change(request,post_change_redirect='/index/')
